@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fajri Octadiansyah — Data Scientist & Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;500;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:          #0f172a;
+      --surface:     #1e293b;
+      --border:      #334155;
+      --amber:       #38bdf8;
+      --amber-dim:   #0ea5e9;
+      --text:        #cbd5e1;
+      --muted:       #94a3b8;
+      --white:       #f1f5f9;
+      --nav-bg:      rgba(15,23,42,0.88);
+      --noise-op:    0.18;
+      --grid-op:     0.35;
+    }
+    html[data-theme="light"] {
+      --bg:          #f0f4f8;
+      --surface:     #ffffff;
+      --border:      #cdd8e3;
+      --amber:       #2563eb;
+      --amber-dim:   #1d4ed8;
+      --text:        #334155;
+      --muted:       #64748b;
+      --white:       #0f172a;
+      --nav-bg:      rgba(240,244,248,0.90);
+      --noise-op:    0.10;
+      --grid-op:     0.55;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: var(--noise-op);
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: var(--grid-op);
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-links a.active { color: var(--amber); }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 8px;
+      cursor: pointer;
+      color: var(--muted);
+      line-height: 0;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .theme-toggle:hover { color: var(--amber); border-color: var(--amber); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 64px;
+      align-items: end;
+    }
+    .hero-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--amber);
+    }
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 1.04;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 32px;
+    }
+    .hero-bio {
+      font-size: 15px;
+      color: var(--text);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+    .hero-contacts {
+      display: flex; flex-wrap: wrap; gap: 16px;
+    }
+    .contact-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .contact-pill:hover { border-color: var(--amber); color: var(--amber); }
+    .contact-pill svg { width:13px; height:13px; flex-shrink:0; }
+
+    /* HERO CARD */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      position: relative;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--amber) 0%, transparent 60%);
+      z-index: -1;
+      opacity: 0.3;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .stat {
+      background: var(--bg);
+      padding: 18px 16px;
+    }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .education-block {
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .edu-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-dim);
+      margin-bottom: 6px;
+    }
+    .edu-degree {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.4;
+    }
+    .edu-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 100px 0;
+      border-top: 1px solid var(--border);
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.14em;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 4vw, 48px);
+      color: var(--white);
+      line-height: 1;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: flex; flex-direction: column; gap: 2px; }
+    .exp-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .exp-item:hover { border-color: var(--amber-dim); }
+    .exp-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      padding: 28px 32px;
+      cursor: pointer;
+      gap: 16px;
+    }
+    .exp-role {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .exp-company {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+    }
+    .exp-period {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .exp-body {
+      padding: 0 32px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .exp-bullets {
+      list-style: none;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .exp-bullets li {
+      padding-left: 20px;
+      position: relative;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .exp-bullets li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--amber);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover {
+      border-color: var(--amber-dim);
+      transform: translateY(-2px);
+    }
+    .skill-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .skill-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .proj-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .proj-card:hover { border-color: var(--amber-dim); transform: translateY(-3px); }
+    .proj-card:hover::after { opacity: 1; }
+    .proj-index {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--amber-dim);
+      letter-spacing: 0.12em;
+    }
+    .proj-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    .proj-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .proj-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      background: var(--bg);
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      color: var(--amber);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      line-height: 1;
+      transition: background 0.2s, color 0.2s;
+    }
+    .proj-link:hover { background: var(--amber); color: var(--bg); }
+    .proj-link svg { width: 11px; height: 11px; flex-shrink: 0; }
+    .proj-links {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 6px;
+    }
+    .proj-links .proj-link { position: static; }
+    .proj-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .proj-tool {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--amber);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero-tag    { animation: fadeSlideIn 0.5s ease 0.1s both; }
+    .hero-name   { animation: fadeSlideIn 0.5s ease 0.2s both; }
+    .hero-role   { animation: fadeSlideIn 0.5s ease 0.3s both; }
+    .hero-bio    { animation: fadeSlideIn 0.5s ease 0.4s both; }
+    .hero-contacts { animation: fadeSlideIn 0.5s ease 0.5s both; }
+    .hero-card   { animation: fadeSlideIn 0.6s ease 0.35s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .nav-links { display: none; }
+      .footer-inner { flex-direction: column; gap: 12px; }
+      .section-line { display: none; }
+    }
+
+    /* ── HUMAN EDGE CARDS ── */
+    .human-edge {
+      padding: 80px 0 0;
+    }
+    .human-edge-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+    .human-edge-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px, 3vw, 30px);
+      color: var(--white);
+      margin-bottom: 40px;
+      max-width: 520px;
+      line-height: 1.3;
+    }
+    .human-edge-heading em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .human-edge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .he-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px 28px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .he-card:hover {
+      border-color: var(--amber-dim);
+      transform: translateY(-4px);
+    }
+    .he-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--amber) 0%, var(--amber-dim) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .he-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: #0f172a;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .he-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+    .he-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .he-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .he-continuous {
+      margin-top: 28px;
+      text-align: left;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(15px, 2vw, 18px);
+      font-style: italic;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .he-continuous span {
+      color: var(--amber);
+      letter-spacing: 0.18em;
+    }
+    @media (max-width: 768px) {
+      .human-edge-grid { grid-template-columns: 1fr; }
+      .he-continuous { text-align: left; }
+    }
+
+    /* ── DOWNLOAD CV BUTTON ── */
+    .cv-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: var(--amber);
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cv-download:hover { opacity: 0.82; }
+    .cv-download svg { width: 13px; height: 13px; }
+
+    /* ── CV PRINT (hidden on screen) ── */
+    #cv-print { display: none; }
+
+    @media print {
+      nav, body::before, body::after, .wrapper, footer { display: none !important; }
+      body { background: #fff !important; margin: 0; padding: 0; }
+      #cv-print {
+        display: block !important;
+        font-family: Arial, sans-serif;
+        font-size: 10.5pt;
+        color: #000;
+        padding: 18mm 20mm;
+        line-height: 1.5;
+      }
+      .cv-header { text-align: center; margin-bottom: 14pt; }
+      .cv-header h1 { font-size: 18pt; font-weight: bold; margin: 0 0 3pt; }
+      .cv-header .cv-title { font-size: 11pt; font-weight: bold; margin: 0 0 4pt; }
+      .cv-header .cv-contacts { font-size: 9.5pt; color: #1a56db; }
+      .cv-section { margin-top: 12pt; }
+      .cv-section h2 {
+        font-size: 11pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 1.5px solid #000;
+        padding-bottom: 2pt;
+        margin-bottom: 8pt;
+        letter-spacing: 0.03em;
+      }
+      .cv-exp-header { display: flex; justify-content: space-between; align-items: baseline; }
+      .cv-exp-title { font-weight: bold; font-size: 10.5pt; }
+      .cv-exp-period { font-size: 10pt; }
+      .cv-exp-sub { font-size: 10pt; color: #333; margin-bottom: 4pt; }
+      .cv-bullets { margin: 4pt 0 10pt 16pt; padding: 0; }
+      .cv-bullets li { margin-bottom: 3pt; }
+      .cv-profile p { text-align: justify; }
+      .cv-edu-row { display: flex; justify-content: space-between; }
+      .cv-edu-title { font-weight: bold; }
+      .cv-cert-row { display: flex; justify-content: space-between; margin-bottom: 6pt; }
+      .cv-cert-name { font-weight: bold; }
+      .cv-cert-issuer { font-size: 10pt; color: #333; }
+      .cv-proj-title { font-weight: bold; margin-bottom: 1pt; }
+      .cv-proj-desc { margin-bottom: 8pt; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">F.O. Umar</span>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrapper">
+  <section id="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag">Data Scientist &amp; AI Engineer</div>
+        <h1 class="hero-name">Fajri<br><em>Octadiansyah</em><br>Umar</h1>
+        <p class="hero-role">// Bekasi, Indonesia &nbsp;·&nbsp; 3+ years experience</p>
+        <p class="hero-bio">
+          Data Scientist with over three years of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in Mechanical Engineering from University of Indonesia with strong analytical and problem-solving foundations.
+        </p>
+        <div class="hero-contacts">
+          <a class="contact-pill" href="mailto:Dian_zexion@yahoo.co.id">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            Dian_zexion@yahoo.co.id
+          </a>
+          <a class="contact-pill" href="tel:+6285946055386">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.4 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.94 5.94l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +62 859 4605 5386
+          </a>
+          <a class="contact-pill" href="https://linkedin.com/in/fajriocta" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            linkedin.com/in/fajriocta
+          </a>
+          <a class="contact-pill" href="https://github.com/Fajriocta" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            github.com/Fajriocta
+          </a>
+          <button class="cv-download" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download CV
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Years<br>Experience</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">6+</div>
+            <div class="stat-label">ML Models<br>/ Year</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">9+</div>
+            <div class="stat-label">Projects<br>Delivered</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3.63</div>
+            <div class="stat-label">Master's<br>GPA</div>
+          </div>
+        </div>
+        <div class="education-block">
+          <div class="edu-tag">Education</div>
+          <div class="edu-degree">Master's in Mechanical Engineering</div>
+          <div class="edu-meta">University of Indonesia &nbsp;·&nbsp; 2019–2021</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HUMAN EDGE -->
+  <div class="wrapper">
+    <div class="human-edge">
+      <div class="human-edge-label reveal">What makes me different</div>
+      <div class="human-edge-heading reveal">Skills that <em>set me apart</em> from AI</div>
+      <div class="human-edge-grid">
+
+        <div class="he-card reveal">
+          <div class="he-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+          </div>
+          <div class="he-num">01 —</div>
+          <div class="he-title">Problem Solving</div>
+          <div class="he-desc">Translating ambiguous, real-world business challenges into structured data problems — combining domain context with analytical thinking to deliver practical, actionable solutions.</div>
+        </div>
+
+        <div class="he-card reveal">
+          <div class="he-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="he-num">02 —</div>
+          <div class="he-title">Effective Communication</div>
+          <div class="he-desc">Bridging the gap between technical findings and non-technical stakeholders — presenting data insights clearly, influencing decisions, and aligning cross-functional teams around a shared goal.</div>
+        </div>
+
+        <div class="he-card reveal">
+          <div class="he-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="he-num">03 —</div>
+          <div class="he-title">Leadership</div>
+          <div class="he-desc">Leading data initiatives end-to-end — from defining scope and guiding junior team members to owning delivery accountability and building a culture of data-driven decision-making.</div>
+        </div>
+
+      </div>
+
+      <div class="he-continuous reveal">& Continuous Learning <span>. . .</span></div>
+
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <span class="section-num">01 —</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Data Scientist Supervisor</div>
+            <div class="exp-company">Pyridam Farma</div>
+          </div>
+          <div class="exp-period">Oct 2025 — Present</div>
+        </div>
+        <div class="exp-body">
+          <ul class="exp-bullets">
+            <li>Researched data science and AI technologies, evaluating 5–8 tools and frameworks annually</li>
+            <li>Designed data-driven and AI-based solutions for business needs, completing 4–6 end-to-end projects per year</li>
+            <li>Developed machine learning and AI models for 6 use cases annually</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Data Scientist</div>
+            <div class="exp-company">All Data International</div>
+          </div>
+          <div class="exp-period">May 2022 — Oct 2025</div>
+        </div>
+        <div class="exp-body">
+          <ul class="exp-bullets">
+            <li>Defined client data problems from a business perspective for 2 major use cases annually, ensuring clear project scope and measurable objectives</li>
+            <li>Delivered data-driven solutions tailored to client needs, supporting 2 end-to-end analytical projects per year with actionable insights</li>
+            <li>Cleaned datasets and performed ETL processes across multiple data sources, improving data quality and readiness by 20–30%</li>
+            <li>Developed algorithms and models aligned with project scope, producing 2 production-ready models annually that enhanced business decision-making</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Learning Content Developer</div>
+            <div class="exp-company">MatchUp Skills &nbsp;·&nbsp; Freelance</div>
+          </div>
+          <div class="exp-period">Apr 2025 — Oct 2025</div>
+        </div>
+        <div class="exp-body">
+          <ul class="exp-bullets">
+            <li>Developed e-learning materials focused on Data Science and Artificial Intelligence, including videos and structured syllabuses designed to be easily understood by learners</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">Assistant Tutor — Data Science</div>
+            <div class="exp-company">Rakamin Academy &nbsp;·&nbsp; Part-time · Remote</div>
+          </div>
+          <div class="exp-period">Sep 2023 — Feb 2024</div>
+        </div>
+        <div class="exp-body">
+          <ul class="exp-bullets">
+            <li>Facilitated learning sessions for a class of 40 students in the Data Science Bootcamp</li>
+            <li>Explained key concepts in data science, including statistics, Python programming, machine learning, and more</li>
+            <li>Assisted students with assignments, research, and final projects</li>
+            <li>Evaluated and provided feedback on student submissions and performance</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">02 —</span>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">MATLAB</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Databases & BI</div>
+        <div class="skill-tags">
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">DBeaver</span>
+          <span class="skill-tag">Tableau</span>
+          <span class="skill-tag">Looker</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Platforms & Tools</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Dataiku</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">n8n</span>
+          <span class="skill-tag">Streamlit</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">GitLab</span>
+          <span class="skill-tag">Sourcetree</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">AI / ML</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Machine Learning</span>
+          <span class="skill-tag">Deep Learning</span>
+          <span class="skill-tag">RAG Systems</span>
+          <span class="skill-tag">LLM Integration</span>
+          <span class="skill-tag">Gemini API</span>
+          <span class="skill-tag">LangGraph</span>
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">MLflow</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Bahasa Indonesia</span>
+          <span class="skill-tag">English</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <span class="section-num">03 —</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-index">01</div>
+        <div class="proj-title">Dashboard Balanced Scorecard</div>
+        <div class="proj-desc">Designed data pipelines and built dashboards for KPI tracking and employee performance metrics, supporting data-driven decision-making across the organization.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">SQL</span>
+          <span class="proj-tool">Tableau</span>
+          <span class="proj-tool">PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">02</div>
+        <div class="proj-title">Optimization Scheduler</div>
+        <div class="proj-desc">Developed and implemented scheduling algorithms for the energy industry, with a focus on renewable energy resource optimization.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">MATLAB</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">03</div>
+        <div class="proj-title">Dashboard 360</div>
+        <div class="proj-desc">Internal product involving end to end ETL processes to create comprehensive business dashboards with unified data views across departments.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">PostgreSQL</span>
+          <span class="proj-tool">Looker</span>
+          <span class="proj-tool">DBeaver</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">04</div>
+        <div class="proj-title">GenAI Internal Product</div>
+        <div class="proj-desc">Developed AI-powered solutions to assist internal teams with various tasks, integrating generative AI capabilities into existing business workflows.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">Gemini API</span>
+          <span class="proj-tool">n8n</span>
+          <span class="proj-tool">Streamlit</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">05</div>
+        <div class="proj-title">Anti-Fraud Prediction</div>
+        <div class="proj-desc">Cleaned financial data and developed machine learning algorithms to detect and predict fraudulent activity, improving transaction security.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">scikit-learn</span>
+          <span class="proj-tool">SQL</span>
+          <span class="proj-tool">Dataiku</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">06</div>
+        <div class="proj-title">ChatBot AI — Marketing</div>
+        <div class="proj-desc">Built an AI-powered product for the marketing team covering KOL placement recommendations and campaign strategy suggestions.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">Gemini API</span>
+          <span class="proj-tool">RAG</span>
+          <span class="proj-tool">Streamlit</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <a class="proj-link" href="https://github.com/Fajriocta/Crawler_coupang" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crawling Coupang
+        </a>
+        <div class="proj-index">07</div>
+        <div class="proj-title">Korean Product Crawling & Viz</div>
+        <div class="proj-desc">Scraped product data from Coupang and OliveYoung and built visual analytics to surface trending products and market insights.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">BeautifulSoup</span>
+          <span class="proj-tool">Tableau</span>
+          <span class="proj-tool">Data Crawling</span>
+          <span class="proj-tool">Data Wrangling</span>
+          <span class="proj-tool">Data Visualization</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">08</div>
+        <div class="proj-title">Credit Scoring</div>
+        <div class="proj-desc">Prepared and processed financial datasets and designed machine learning algorithms to evaluate and predict credit risk for lending decisions.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">scikit-learn</span>
+          <span class="proj-tool">SQL</span>
+          <span class="proj-tool">PostgreSQL</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <a class="proj-link" href="https://github.com/Fajriocta/Build-Model-Recomender-System" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          GitHub
+        </a>
+        <div class="proj-index">09</div>
+        <div class="proj-title">Recommendation System</div>
+        <div class="proj-desc">Self-initiated project to design and implement recommendation algorithms, exploring collaborative and content-based filtering approaches.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">scikit-learn</span>
+          <span class="proj-tool">Pandas</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-index">10</div>
+        <div class="proj-title">Legal-AI</div>
+        <div class="proj-desc">Built an AI-powered tool to assist in analyzing Non-Disclosure Agreements (NDAs) submitted by users, based on Indonesian law — including clause-level risk scoring (High/Low Risk) and references to applicable Indonesian legal regulations.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">API</span>
+          <span class="proj-tool">Gemini API</span>
+          <span class="proj-tool">RAG</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-links">
+          <a class="proj-link" href="https://github.com/Fajriocta/To-Do-List/tree/master" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+          <a class="proj-link" href="https://todolistcihuyy.netlify.app/" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Demo
+          </a>
+        </div>
+        <div class="proj-index">11</div>
+        <div class="proj-title">To-Do List Web App</div>
+        <div class="proj-desc">A web-based to-do list application with a built in mood tracker and productivity insights, built with HTML, CSS, and JavaScript, zero frameworks or dependencies.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">HTML</span>
+          <span class="proj-tool">CSS</span>
+          <span class="proj-tool">JavaScript</span>
+          <span class="proj-tool">Canvas</span>
+          <span class="proj-tool">Netlify</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-links">
+          <a class="proj-link" href="https://github.com/Fajriocta/pdf-ingest-parser/blob/main/README.md" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            GitHub
+          </a>
+          <a class="proj-link" href="https://docs.google.com/spreadsheets/d/1BXC985rpzabKco400pJ1NlYKcVQD9o1FzBBjyM04FhE/edit?gid=1402754868#gid=1402754868" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Sheet
+          </a>
+        </div>
+        <div class="proj-index">12</div>
+        <div class="proj-title">PDF Data Crawling</div>
+        <div class="proj-desc">Extracted financial data from info-financiere.gouv.fr, applied data transformation pipelines, and exported the results as CSV — with support for daily automated ingestion or targeted date-specific extraction.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">BeautifulSoup</span>
+          <span class="proj-tool">Pandas</span>
+          <span class="proj-tool">Google Sheets</span>
+          <span class="proj-tool">Data Entry</span>
+          <span class="proj-tool">Data Crawling</span>
+          <span class="proj-tool">Data Wrangling </span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <a class="proj-link" href="https://github.com/Fajriocta/FaceRecog" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          GitHub
+        </a>
+        <div class="proj-index">13</div>
+        <div class="proj-title">Face Recognition Attendance</div>
+        <div class="proj-desc">A CNN-based face recognition system for employee attendance that automatically identifies individuals from photos and records attendance via REST API.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span>
+          <span class="proj-tool">TensorFlow</span>
+          <span class="proj-tool">scikit-learn</span>
+          <span class="proj-tool">SQLite</span>
+          <span class="proj-tool">Flask</span>
+          <span class="proj-tool">Seaborn</span>
+          <span class="proj-tool">Computer Vision</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- CV PRINT (hidden on screen, shown on print) -->
+<div id="cv-print">
+
+  <div class="cv-header">
+    <h1>Fajri Octadiansyah Umar</h1>
+    <div class="cv-title">Data Scientist &amp; AI Engineer</div>
+    <div class="cv-contacts">
+      Bekasi, Indonesia &nbsp;|&nbsp; Dian_zexion@yahoo.co.id &nbsp;|&nbsp; +6285946055386 &nbsp;|&nbsp; linkedin.com/in/fajriocta &nbsp;|&nbsp; github.com/Fajriocta
+    </div>
+  </div>
+
+  <div class="cv-section cv-profile">
+    <h2>Profile</h2>
+    <p>Data Scientist with over three years of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in Mechanical Engineering from University of Indonesia with strong analytical and problem-solving foundations. Proficient in Python, SQL, MATLAB, PostgreSQL, Dataiku, Tableau, Looker, and various AI/ML frameworks, continuously expanding expertise to contribute to scalable and impactful data solutions.</p>
+  </div>
+
+  <div class="cv-section">
+    <h2>Education</h2>
+    <div class="cv-edu-row">
+      <span><span class="cv-edu-title">Master's Degree in Mechanical Engineering,</span> University of Indonesia</span>
+      <span>2019 – 2021</span>
+    </div>
+    <ul class="cv-bullets">
+      <li>GPA: 3.63</li>
+    </ul>
+  </div>
+
+  <div class="cv-section">
+    <h2>Working Experiences</h2>
+
+    <div class="cv-exp-header">
+      <span class="cv-exp-title">Data Scientist Supervisor, Pyridam Farma</span>
+    </div>
+    <div class="cv-exp-sub">October, 2025 – Present</div>
+    <ul class="cv-bullets">
+      <li>Researched data science and AI technologies, evaluating 5–8 tools and frameworks annually</li>
+      <li>Designed data-driven and AI-based solutions for business needs, completing 4–6 end-to-end projects per year</li>
+      <li>Developed machine learning and AI models for 6 use cases annually</li>
+    </ul>
+
+    <div class="cv-exp-header">
+      <span class="cv-exp-title">Data Scientist, All Data International</span>
+    </div>
+    <div class="cv-exp-sub">May, 2022 – October, 2025</div>
+    <ul class="cv-bullets">
+      <li>Defined client data problems from a business perspective for 2 major use cases annually, ensuring clear project scope and measurable objectives</li>
+      <li>Delivered data-driven solutions tailored to client needs, supporting 2 end-to-end analytical projects per year with actionable insights</li>
+      <li>Cleaned datasets and performed ETL processes across multiple data sources, improving data quality and readiness by 20–30%</li>
+      <li>Developed algorithms and models aligned with project scope, producing 2 production-ready models annually that enhanced business decision-making</li>
+    </ul>
+
+    <div class="cv-exp-header">
+      <span class="cv-exp-title">Learning Content Developer, MatchUp Skills &nbsp;·&nbsp; Freelance</span>
+    </div>
+    <div class="cv-exp-sub">April, 2025 – October, 2025</div>
+    <ul class="cv-bullets">
+      <li>Developed e-learning materials focused on Data Science and Artificial Intelligence, including videos and structured syllabuses designed to be easily understood by learners</li>
+    </ul>
+
+    <div class="cv-exp-header">
+      <span class="cv-exp-title">Assistant Tutor – Data Science, Rakamin Academy &nbsp;·&nbsp; Part-time · Remote</span>
+    </div>
+    <div class="cv-exp-sub">September, 2023 – February, 2024</div>
+    <ul class="cv-bullets">
+      <li>Facilitated learning sessions for a class of 40 students in the Data Science Bootcamp</li>
+      <li>Explained key concepts in data science, including statistics, Python programming, machine learning, and more</li>
+      <li>Assisted students with assignments, research, and final projects</li>
+      <li>Evaluated and provided feedback on student submissions and performance</li>
+    </ul>
+  </div>
+
+  <div class="cv-section">
+    <h2>Skills</h2>
+    <p><strong>Languages:</strong> Python, C, SQL, MATLAB</p>
+    <p><strong>Databases &amp; BI:</strong> PostgreSQL, DBeaver, Tableau, Looker</p>
+    <p><strong>Platforms &amp; Tools:</strong> Dataiku, Docker, n8n, Streamlit</p>
+    <p><strong>AI / ML:</strong> Machine Learning, Deep Learning, RAG Systems, LLM Integration, Gemini API, MLflow</p>
+    <p><strong>Human Languages:</strong> Bahasa Indonesia (Native), English (Professional Working Proficiency)</p>
+  </div>
+
+  <div class="cv-section">
+    <h2>Projects</h2>
+
+    <div class="cv-proj-title">Dashboard Balanced Scorecard</div>
+    <div class="cv-proj-desc">Designed data pipelines and built dashboards for KPI tracking and employee performance metrics, supporting data-driven decision-making across the organization.</div>
+
+    <div class="cv-proj-title">Optimization Scheduler</div>
+    <div class="cv-proj-desc">Developed and implemented scheduling algorithms for the energy industry, with a focus on renewable energy resource optimization.</div>
+
+    <div class="cv-proj-title">Dashboard 360</div>
+    <div class="cv-proj-desc">Internal product involving end-to-end ETL processes to create comprehensive business dashboards with unified data views across departments.</div>
+
+    <div class="cv-proj-title">GenAI Internal Product</div>
+    <div class="cv-proj-desc">Developed AI-powered solutions to assist internal teams with various tasks, integrating generative AI capabilities into existing business workflows.</div>
+
+    <div class="cv-proj-title">Anti-Fraud Prediction</div>
+    <div class="cv-proj-desc">Cleaned financial data and developed machine learning algorithms to detect and predict fraudulent activity, improving transaction security.</div>
+
+    <div class="cv-proj-title">ChatBot AI — Marketing</div>
+    <div class="cv-proj-desc">Built an AI-powered product for the marketing team covering KOL placement recommendations and campaign strategy suggestions.</div>
+
+    <div class="cv-proj-title">Korean Product Crawling &amp; Viz</div>
+    <div class="cv-proj-desc">Scraped product data from Coupang and OliveYoung and built visual analytics to surface trending products and market insights.</div>
+
+    <div class="cv-proj-title">Credit Scoring</div>
+    <div class="cv-proj-desc">Prepared and processed financial datasets and designed machine learning algorithms to evaluate and predict credit risk for lending decisions.</div>
+
+    <div class="cv-proj-title">Recommendation System</div>
+    <div class="cv-proj-desc">Self-initiated project to design and implement recommendation algorithms, exploring collaborative and content-based filtering approaches.</div>
+
+    <div class="cv-proj-title">To-Do List Web App</div>
+    <div class="cv-proj-desc">A web-based to-do list application with a built-in mood tracker and productivity insights — built with pure HTML, CSS, and JavaScript, zero frameworks or dependencies.</div>
+
+    <div class="cv-proj-title">Legal-AI</div>
+    <div class="cv-proj-desc">Built an AI-powered tool to assist in analyzing Non-Disclosure Agreements (NDAs) submitted by users, based on Indonesian law — including clause-level risk scoring (High/Low Risk) and references to applicable Indonesian legal regulations.</div>
+
+    <div class="cv-proj-title">PDF Data Crawling</div>
+    <div class="cv-proj-desc">Extracted financial data from info-financiere.gouv.fr, applied data transformation pipelines, and exported the results as CSV — with support for daily automated ingestion or targeted date-specific extraction.</div>
+
+    <div class="cv-proj-title">Face Recognition Attendance</div>
+    <div class="cv-proj-desc">A CNN-based face recognition system for employee attendance that automatically identifies individuals from photos and records attendance via REST API.</div>
+  </div>
+
+  <div class="cv-section">
+    <h2>Certifications</h2>
+
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">MLOps Practitioner</div><div class="cv-cert-issuer">Dataiku</div></div>
+      <div>October, 2023</div>
+    </div>
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">Advanced Designer</div><div class="cv-cert-issuer">Dataiku</div></div>
+      <div>October, 2023</div>
+    </div>
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">Developer Dataiku</div><div class="cv-cert-issuer">Dataiku</div></div>
+      <div>October, 2023</div>
+    </div>
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">ML Practitioner</div><div class="cv-cert-issuer">Dataiku</div></div>
+      <div>October, 2023</div>
+    </div>
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">Core Designer</div><div class="cv-cert-issuer">Dataiku</div></div>
+      <div>October, 2023</div>
+    </div>
+    <div class="cv-cert-row">
+      <div><div class="cv-cert-name">Python Dev</div><div class="cv-cert-issuer">Kaggle</div></div>
+      <div>November, 2023</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrapper">
+    <div class="footer-inner">
+      <span class="footer-logo">Fajri Octadiansyah Umar</span>
+      <span class="footer-copy">Data Scientist &amp; Engineer &nbsp;·&nbsp; Bekasi, Indonesia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── THEME TOGGLE ──
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const iconSun = document.getElementById('iconSun');
+  const iconMoon = document.getElementById('iconMoon');
+
+  function applyTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    iconSun.style.display  = theme === 'light' ? 'block' : 'none';
+    iconMoon.style.display = theme === 'light' ? 'none'  : 'block';
+  }
+
+  applyTheme(localStorage.getItem('theme') || 'dark');
+  toggle.addEventListener('click', () => {
+    applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // ── ACTIVE NAV ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => navObserver.observe(s));
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+
+  reveals.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'none';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
