@@ -430,6 +430,22 @@
     }
     .proj-card:hover { border-color: var(--amber-dim); transform: translateY(-3px); }
     .proj-card:hover::after { opacity: 1; }
+    .proj-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      background: var(--bg);
+      border-radius: 3px;
+    }
+    .proj-role.ds {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .proj-role.ai {
+      border: 1px solid #2dd4bf;
+      color: #2dd4bf;
+    }
     .proj-index {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
@@ -493,6 +509,185 @@
       border: 1px solid var(--border);
       border-radius: 3px;
       color: var(--amber);
+    }
+    .proj-skill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: 3px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── PROJECTS HINT ── */
+    .projects-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 32px;
+      opacity: 0.7;
+    }
+    .projects-hint em {
+      font-style: normal;
+      color: var(--amber-dim);
+    }
+
+    /* ── PROJECT IMPACT ── */
+    .proj-impact {
+      margin-top: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    .proj-impact-toggle {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .proj-impact-toggle:hover { color: var(--amber); }
+    .proj-impact-toggle .toggle-arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+      font-style: normal;
+    }
+    .proj-impact-toggle.open .toggle-arrow { transform: rotate(90deg); }
+    .proj-impact-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .proj-impact-body.open { max-height: 400px; }
+    .proj-impact-bullets {
+      list-style: none;
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .proj-impact-bullets li {
+      padding-left: 16px;
+      position: relative;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .proj-impact-bullets li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--amber);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    /* ── PROJECT FILTER ── */
+    .proj-filter-group {
+      margin-bottom: 4px;
+    }
+    .proj-filter-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 7px 0;
+      width: 100%;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .proj-filter-header:hover { color: var(--text); }
+    .proj-filter-chevron {
+      font-size: 14px;
+      line-height: 1;
+      transition: transform 0.22s ease;
+    }
+    .proj-filter-header.open .proj-filter-chevron { transform: rotate(90deg); }
+    .proj-filter-active-tag {
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      color: var(--amber);
+      text-transform: none;
+    }
+    .proj-filter-active-tag.skill { color: var(--muted); }
+    .proj-filter-active-tag.role  { color: #2dd4bf; }
+    .proj-filter-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .proj-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 6px 0 14px;
+    }
+    .proj-filter-btn {
+      padding: 5px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .proj-filter-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .proj-filter-btn.active {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+    .proj-filter-btn.skill-btn:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+    .proj-filter-btn.skill-btn.active {
+      background: var(--muted);
+      border-color: var(--muted);
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+    .proj-filter-btn.role-btn:hover {
+      border-color: #2dd4bf;
+      color: #2dd4bf;
+    }
+    .proj-filter-btn.role-btn.active {
+      background: #2dd4bf;
+      border-color: #2dd4bf;
+      color: #0d0d0d;
+      font-weight: 600;
+    }
+    .proj-filter-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 12px 0 16px;
+    }
+    .proj-card.hidden {
+      display: none;
     }
 
     /* ── FOOTER ── */
@@ -976,14 +1171,93 @@
       <h2 class="section-title">Projects</h2>
       <div class="section-line"></div>
     </div>
+    <p class="projects-hint reveal">* Click <em>"Impact"</em> on select projects to see the business value delivered to clients.</p>
+
+    <div class="reveal">
+      <div class="proj-filter-group">
+        <button class="proj-filter-header" onclick="toggleFilterSection(this)">
+          <span class="proj-filter-chevron">›</span>
+          <span>Tools</span>
+          <span class="proj-filter-active-tag" id="tool-active-tag"></span>
+        </button>
+        <div class="proj-filter-body">
+          <div class="proj-filter-bar">
+            <button class="proj-filter-btn active" onclick="filterByTool(this,'All')">All</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Python')">Python</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'MATLAB')">MATLAB</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'HTML')">HTML</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'CSS')">CSS</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'JavaScript')">JavaScript</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Golang')">Golang</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'SQL')">SQL</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'PostgreSQL')">PostgreSQL</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'SQLite')">SQLite</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Google Sheets')">Google Sheets</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Tableau')">Tableau</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Looker')">Looker</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'DBeaver')">DBeaver</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Seaborn')">Seaborn</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Canvas')">Canvas</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Gemini API')">Gemini API</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'RAG')">RAG</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'scikit-learn')">scikit-learn</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'TensorFlow')">TensorFlow</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Pandas')">Pandas</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'BeautifulSoup')">BeautifulSoup</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Dataiku')">Dataiku</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Streamlit')">Streamlit</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'FastAPI')">FastAPI</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Flask')">Flask</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'n8n')">n8n</button>
+            <button class="proj-filter-btn" onclick="filterByTool(this,'Netlify')">Netlify</button>
+          </div>
+        </div>
+      </div>
+      <hr class="proj-filter-divider">
+      <div class="proj-filter-group">
+        <button class="proj-filter-header" onclick="toggleFilterSection(this)">
+          <span class="proj-filter-chevron">›</span>
+          <span>Skills</span>
+          <span class="proj-filter-active-tag skill" id="skill-active-tag"></span>
+        </button>
+        <div class="proj-filter-body">
+          <div class="proj-filter-bar">
+            <button class="proj-filter-btn skill-btn active" onclick="filterBySkill(this,'All')">All</button>
+            <button class="proj-filter-btn skill-btn" onclick="filterBySkill(this,'Data Wrangling')">Data Wrangling</button>
+            <button class="proj-filter-btn skill-btn" onclick="filterBySkill(this,'Data Visualization')">Data Visualization</button>
+            <button class="proj-filter-btn skill-btn" onclick="filterBySkill(this,'Data Crawling')">Data Crawling</button>
+            <button class="proj-filter-btn skill-btn" onclick="filterBySkill(this,'Data Entry')">Data Entry</button>
+            <button class="proj-filter-btn skill-btn" onclick="filterBySkill(this,'Computer Vision')">Computer Vision</button>
+          </div>
+        </div>
+      </div>
+      <hr class="proj-filter-divider">
+      <div class="proj-filter-group">
+        <button class="proj-filter-header" onclick="toggleFilterSection(this)">
+          <span class="proj-filter-chevron">›</span>
+          <span>Role</span>
+          <span class="proj-filter-active-tag role" id="role-active-tag"></span>
+        </button>
+        <div class="proj-filter-body">
+          <div class="proj-filter-bar">
+            <button class="proj-filter-btn role-btn active" onclick="filterByRole(this,'All')">All</button>
+            <button class="proj-filter-btn role-btn" onclick="filterByRole(this,'Data Scientist')">Data Scientist</button>
+            <button class="proj-filter-btn role-btn" onclick="filterByRole(this,'AI Engineer')">AI Engineer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="proj-filter-divider" style="margin: 24px 0 28px;">
 
     <div class="projects-grid">
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,SQL,Tableau,PostgreSQL" data-roles="Data Scientist">
         <div class="proj-index">01</div>
         <div class="proj-title">Dashboard Balanced Scorecard</div>
         <div class="proj-desc">Designed data pipelines and built dashboards for KPI tracking and employee performance metrics, supporting data-driven decision-making across the organization.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">SQL</span>
           <span class="proj-tool">Tableau</span>
@@ -991,33 +1265,49 @@
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,MATLAB" data-roles="Data Scientist">
         <div class="proj-index">02</div>
         <div class="proj-title">Optimization Scheduler</div>
         <div class="proj-desc">Developed and implemented scheduling algorithms for the energy industry, with a focus on renewable energy resource optimization.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">MATLAB</span>
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,PostgreSQL,Looker,DBeaver" data-roles="Data Scientist">
         <div class="proj-index">03</div>
         <div class="proj-title">Dashboard 360</div>
         <div class="proj-desc">Internal product involving end to end ETL processes to create comprehensive business dashboards with unified data views across departments.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">PostgreSQL</span>
           <span class="proj-tool">Looker</span>
           <span class="proj-tool">DBeaver</span>
         </div>
+        <div class="proj-impact">
+          <button class="proj-impact-toggle" onclick="toggleImpact(this)">
+            <span class="toggle-arrow">›</span> Impact for Client
+          </button>
+          <div class="proj-impact-body">
+            <ul class="proj-impact-bullets">
+              <li>Helped team leaders manage and oversee team operations more effectively through a unified data view</li>
+              <li>Enabled visibility into individual employee productivity, supporting more objective performance evaluations</li>
+              <li>Visual dashboards surfaced actionable insights to guide decisions that improved overall employee productivity</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,Gemini API,n8n,Streamlit" data-roles="Data Scientist,AI Engineer">
         <div class="proj-index">04</div>
         <div class="proj-title">GenAI Internal Product</div>
         <div class="proj-desc">Developed AI-powered solutions to assist internal teams with various tasks, integrating generative AI capabilities into existing business workflows.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
+          <span class="proj-role ai">AI Engineer</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">Gemini API</span>
           <span class="proj-tool">n8n</span>
@@ -1025,53 +1315,82 @@
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,scikit-learn,SQL,Dataiku" data-roles="Data Scientist">
         <div class="proj-index">05</div>
         <div class="proj-title">Anti-Fraud Prediction</div>
         <div class="proj-desc">Cleaned financial data and developed machine learning algorithms to detect and predict fraudulent activity, improving transaction security.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">scikit-learn</span>
           <span class="proj-tool">SQL</span>
           <span class="proj-tool">Dataiku</span>
         </div>
+        <div class="proj-impact">
+          <button class="proj-impact-toggle" onclick="toggleImpact(this)">
+            <span class="toggle-arrow">›</span> Impact for Client
+          </button>
+          <div class="proj-impact-body">
+            <ul class="proj-impact-bullets">
+              <li>Improved the existing rule-based fraud detection system with a more adaptive ML approach</li>
+              <li>Boosted model accuracy from 10% to 88%, drastically reducing undetected fraudulent transactions</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,Gemini API,RAG,Streamlit" data-roles="Data Scientist,AI Engineer">
         <div class="proj-index">06</div>
         <div class="proj-title">ChatBot AI — Marketing</div>
         <div class="proj-desc">Built an AI-powered product for the marketing team covering KOL placement recommendations and campaign strategy suggestions.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
+          <span class="proj-role ai">AI Engineer</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">Gemini API</span>
           <span class="proj-tool">RAG</span>
           <span class="proj-tool">Streamlit</span>
         </div>
+        <div class="proj-impact">
+          <button class="proj-impact-toggle" onclick="toggleImpact(this)">
+            <span class="toggle-arrow">›</span> Impact for Client
+          </button>
+          <div class="proj-impact-body">
+            <ul class="proj-impact-bullets">
+              <li>Reduced time spent by the marketing team on evaluating key performance metrics</li>
+              <li>AI-powered recommendations surfaced trending content ideas, enabling faster and more informed campaign decisions</li>
+              <li>Cut time-per-content and time-per-account workflows, improving overall team efficiency</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,BeautifulSoup,Tableau" data-skills="Data Crawling,Data Wrangling,Data Visualization" data-roles="Data Scientist,AI Engineer">
         <a class="proj-link" href="https://github.com/Fajriocta/Crawler_coupang" target="_blank">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           Crawling Coupang
         </a>
         <div class="proj-index">07</div>
         <div class="proj-title">Korean Product Crawling & Viz</div>
-        <div class="proj-desc">Scraped product data from Coupang and OliveYoung and built visual analytics to surface trending products and market insights.</div>
+        <div class="proj-desc">Scraped product data from Coupang and OliveYoung and built visual analytics to surface trending products and market insights. Integrated an AI component to automatically summarize customer reviews, extracting key sentiment and product feedback at scale.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
+          <span class="proj-role ai">AI Engineer</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">BeautifulSoup</span>
           <span class="proj-tool">Tableau</span>
-          <span class="proj-tool">Data Crawling</span>
-          <span class="proj-tool">Data Wrangling</span>
-          <span class="proj-tool">Data Visualization</span>
+          <span class="proj-skill">Data Crawling</span>
+          <span class="proj-skill">Data Wrangling</span>
+          <span class="proj-skill">Data Visualization</span>
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,scikit-learn,SQL,PostgreSQL" data-roles="Data Scientist">
         <div class="proj-index">08</div>
         <div class="proj-title">Credit Scoring</div>
         <div class="proj-desc">Prepared and processed financial datasets and designed machine learning algorithms to evaluate and predict credit risk for lending decisions.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">scikit-learn</span>
           <span class="proj-tool">SQL</span>
@@ -1079,7 +1398,7 @@
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,scikit-learn,Pandas" data-roles="Data Scientist">
         <a class="proj-link" href="https://github.com/Fajriocta/Build-Model-Recomender-System" target="_blank">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           GitHub
@@ -1088,25 +1407,46 @@
         <div class="proj-title">Recommendation System</div>
         <div class="proj-desc">Self-initiated project to design and implement recommendation algorithms, exploring collaborative and content-based filtering approaches.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">scikit-learn</span>
           <span class="proj-tool">Pandas</span>
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,Golang,Gemini API,RAG,FastAPI,Streamlit" data-roles="Data Scientist,AI Engineer">
+        <a class="proj-link" href="https://github.com/Fajriocta/Legal-AI" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          GitHub
+        </a>
         <div class="proj-index">10</div>
         <div class="proj-title">Legal-AI</div>
-        <div class="proj-desc">Built an AI-powered tool to assist in analyzing Non-Disclosure Agreements (NDAs) submitted by users, based on Indonesian law — including clause-level risk scoring (High/Low Risk) and references to applicable Indonesian legal regulations.</div>
+        <div class="proj-desc">AI-powered legal document analysis application featuring two core components: an NDA Risk Analyzer and a Legal Chatbot. Built with Go for the web frontend and Python for the AI backend.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
+          <span class="proj-role ai">AI Engineer</span>
           <span class="proj-tool">Python</span>
-          <span class="proj-tool">API</span>
+          <span class="proj-tool">Golang</span>
           <span class="proj-tool">Gemini API</span>
           <span class="proj-tool">RAG</span>
+          <span class="proj-tool">FastAPI</span>
+          <span class="proj-tool">Streamlit</span>
+        </div>
+        <div class="proj-impact">
+          <button class="proj-impact-toggle" onclick="toggleImpact(this)">
+            <span class="toggle-arrow">›</span> Impact for Client
+          </button>
+          <div class="proj-impact-body">
+            <ul class="proj-impact-bullets">
+              <li>Enabled legal teams to evaluate NDAs faster by delivering automated clause-level risk scores (High/Low) mapped to applicable Indonesian regulations — eliminating the need for full manual review</li>
+              <li>Replaced clause-by-clause manual reading with structured AI-generated summaries and detailed clause breakdowns, helping both legal and non-legal stakeholders understand contract risks clearly</li>
+              <li>Legal Chatbot feature allowed users to ask follow-up questions on specific clauses, surfacing relevant legal context on demand</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="HTML,CSS,JavaScript,Canvas,Netlify" data-roles="Data Scientist">
         <div class="proj-links">
           <a class="proj-link" href="https://github.com/Fajriocta/To-Do-List/tree/master" target="_blank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -1121,6 +1461,7 @@
         <div class="proj-title">To-Do List Web App</div>
         <div class="proj-desc">A web-based to-do list application with a built in mood tracker and productivity insights, built with HTML, CSS, and JavaScript, zero frameworks or dependencies.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">HTML</span>
           <span class="proj-tool">CSS</span>
           <span class="proj-tool">JavaScript</span>
@@ -1129,7 +1470,7 @@
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,BeautifulSoup,Pandas,Google Sheets" data-skills="Data Entry,Data Crawling,Data Wrangling" data-roles="Data Scientist">
         <div class="proj-links">
           <a class="proj-link" href="https://github.com/Fajriocta/pdf-ingest-parser/blob/main/README.md" target="_blank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -1144,17 +1485,18 @@
         <div class="proj-title">PDF Data Crawling AMF</div>
         <div class="proj-desc">Extracted financial data from info-financiere.gouv.fr, applied data transformation pipelines, and exported the results as CSV — with support for daily automated ingestion or targeted date-specific extraction.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">BeautifulSoup</span>
           <span class="proj-tool">Pandas</span>
           <span class="proj-tool">Google Sheets</span>
-          <span class="proj-tool">Data Entry</span>
-          <span class="proj-tool">Data Crawling</span>
-          <span class="proj-tool">Data Wrangling </span>
+          <span class="proj-skill">Data Entry</span>
+          <span class="proj-skill">Data Crawling</span>
+          <span class="proj-skill">Data Wrangling</span>
         </div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" data-tools="Python,TensorFlow,scikit-learn,SQLite,Flask,Seaborn" data-skills="Computer Vision" data-roles="Data Scientist">
         <a class="proj-link" href="https://github.com/Fajriocta/FaceRecog" target="_blank">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           GitHub
@@ -1163,13 +1505,14 @@
         <div class="proj-title">Face Recognition Attendance</div>
         <div class="proj-desc">A CNN-based face recognition system for employee attendance that automatically identifies individuals from photos and records attendance via REST API.</div>
         <div class="proj-tools">
+          <span class="proj-role ds">Data Scientist</span>
           <span class="proj-tool">Python</span>
           <span class="proj-tool">TensorFlow</span>
           <span class="proj-tool">scikit-learn</span>
           <span class="proj-tool">SQLite</span>
           <span class="proj-tool">Flask</span>
           <span class="proj-tool">Seaborn</span>
-          <span class="proj-tool">Computer Vision</span>
+          <span class="proj-skill">Computer Vision</span>
         </div>
       </div>
 
@@ -1396,6 +1739,59 @@
   }, { threshold: 0.12 });
 
   reveals.forEach(el => observer.observe(el));
+
+  // ── IMPACT TOGGLE ──
+  function toggleImpact(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
+  }
+
+  // ── PROJECT FILTER ──
+  let activeToolFilter  = 'All';
+  let activeSkillFilter = 'All';
+  let activeRoleFilter  = 'All';
+
+  function applyFilters() {
+    document.querySelectorAll('.proj-card').forEach(card => {
+      const tools  = card.dataset.tools  ? card.dataset.tools.split(',')  : [];
+      const skills = card.dataset.skills ? card.dataset.skills.split(',') : [];
+      const roles  = card.dataset.roles  ? card.dataset.roles.split(',')  : [];
+      const toolMatch  = activeToolFilter  === 'All' || tools.includes(activeToolFilter);
+      const skillMatch = activeSkillFilter === 'All' || skills.includes(activeSkillFilter);
+      const roleMatch  = activeRoleFilter  === 'All' || roles.includes(activeRoleFilter);
+      card.classList.toggle('hidden', !(toolMatch && skillMatch && roleMatch));
+    });
+  }
+
+  function toggleFilterSection(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.toggle('open');
+    body.style.maxHeight = isOpen ? body.scrollHeight + 'px' : null;
+  }
+
+  function filterByTool(btn, tag) {
+    document.querySelectorAll('.proj-filter-btn:not(.skill-btn):not(.role-btn)').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeToolFilter = tag;
+    document.getElementById('tool-active-tag').textContent = tag !== 'All' ? '· ' + tag : '';
+    applyFilters();
+  }
+
+  function filterBySkill(btn, tag) {
+    document.querySelectorAll('.proj-filter-btn.skill-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeSkillFilter = tag;
+    document.getElementById('skill-active-tag').textContent = tag !== 'All' ? '· ' + tag : '';
+    applyFilters();
+  }
+
+  function filterByRole(btn, tag) {
+    document.querySelectorAll('.proj-filter-btn.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeRoleFilter = tag;
+    document.getElementById('role-active-tag').textContent = tag !== 'All' ? '· ' + tag : '';
+    applyFilters();
+  }
 </script>
 </body>
 </html>
