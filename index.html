@@ -151,6 +151,18 @@
   .icon-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
   .icon-btn svg { width: 17px; height: 17px; }
 
+  .music-widget { display: flex; align-items: center; }
+  .volume-slider {
+    width: 0; opacity: 0; margin-right: 0;
+    accent-color: var(--accent);
+    height: 4px; cursor: pointer;
+    transition: width 0.25s ease, opacity 0.2s ease, margin-right 0.25s ease;
+  }
+  .music-widget:hover .volume-slider,
+  .music-widget:focus-within .volume-slider {
+    width: 70px; opacity: 1; margin-right: 10px;
+  }
+
   .logo-badge {
     position: fixed; top: 20px; left: 24px; z-index: 95;
     font-family: 'Fraunces', serif;
@@ -647,10 +659,19 @@
 
 <div class="logo-badge"><span class="dotmark"></span>Fajri O. Umar</div>
 <div class="corner-controls">
+  <div class="music-widget">
+    <input type="range" id="musicVolume" class="volume-slider" min="0" max="100" value="50" title="Volume">
+    <button class="icon-btn" id="musicBtn" title="Toggle background music">
+      <svg id="iconMusicOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <svg id="iconMusicOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+    </button>
+  </div>
   <button class="icon-btn" id="themeBtn" title="Toggle theme">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 </div>
+
+<audio id="bgMusic" src="Morning.mp3" loop preload="none"></audio>
 
 <nav class="side-nav" id="sideNav"></nav>
 
@@ -691,11 +712,11 @@
       <div>
         <div class="eyebrow reveal">About Me</div>
         <h2 class="block-title reveal">A data scientist who turns <em>ambiguity</em> into answers.</h2>
-        <p class="about-bio reveal">Data Scientist with over <strong>three years</strong> of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in <strong>Mechanical Engineering</strong> from University of Indonesia with strong analytical and problem-solving foundations.</p>
+        <p class="about-bio reveal">Data Scientist with over <strong>four years</strong> of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in <strong>Mechanical Engineering</strong> from University of Indonesia with strong analytical and problem-solving foundations.</p>
         <div class="stat-strip" id="statStrip">
-          <div class="stat-card reveal"><div class="stat-num" data-target="3" data-suffix="+">0</div><div class="stat-lbl">Years Experience</div></div>
-          <div class="stat-card reveal"><div class="stat-num" data-target="6" data-suffix="+">0</div><div class="stat-lbl">ML Models / Year</div></div>
-          <div class="stat-card reveal"><div class="stat-num" data-target="9" data-suffix="+">0</div><div class="stat-lbl">Projects Delivered</div></div>
+          <div class="stat-card reveal"><div class="stat-num" data-target="4" data-suffix="+">0</div><div class="stat-lbl">Years Experience</div></div>
+          <div class="stat-card reveal"><div class="stat-num" data-target="8" data-suffix="+">0</div><div class="stat-lbl">ML Models / Year</div></div>
+          <div class="stat-card reveal"><div class="stat-num" data-target="14" data-suffix="+">0</div><div class="stat-lbl">Projects Delivered</div></div>
           <div class="stat-card reveal"><div class="stat-num" data-target="3.63" data-decimals="2">0</div><div class="stat-lbl">Master's GPA</div></div>
         </div>
       </div>
@@ -763,7 +784,7 @@
   <div class="wrap">
     <div class="eyebrow reveal" style="justify-content:center;">Let's Connect</div>
     <h2 class="contact-title reveal">Got a problem worth solving? <em>Let's talk.</em></h2>
-    <p class="contact-sub reveal">Open to new roles, collaborations, and interesting data problems. I usually reply within a day.</p>
+    <p class="contact-sub reveal">Open to new roles, collaborations, and interesting data problems . I usually reply within a day.</p>
     <a class="contact-cta magnetic reveal" href="mailto:Dian_zexion@yahoo.co.id">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
       Dian_zexion@yahoo.co.id
@@ -792,7 +813,7 @@
 
   <div class="cv-section cv-profile">
     <h2>Profile</h2>
-    <p>Data Scientist with over three years of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in Mechanical Engineering from University of Indonesia with strong analytical and problem-solving foundations. Proficient in Python, SQL, MATLAB, PostgreSQL, Dataiku, Tableau, Looker, and various AI/ML frameworks, continuously expanding expertise to contribute to scalable and impactful data solutions.</p>
+    <p>Data Scientist with over four years of experience developing machine learning models, building data pipelines, and delivering data-driven insights. Master's graduate in Mechanical Engineering from University of Indonesia with strong analytical and problem-solving foundations. Proficient in Python, SQL, MATLAB, PostgreSQL, Dataiku, Tableau, Looker, and various AI/ML frameworks, continuously expanding expertise to contribute to scalable and impactful data solutions.</p>
   </div>
 
   <div class="cv-section">
@@ -853,7 +874,7 @@
   <div class="cv-section">
     <h2>Skills</h2>
     <p><strong>Languages:</strong> Python, C, SQL, MATLAB</p>
-    <p><strong>Databases &amp; BI:</strong> PostgreSQL, DBeaver, Tableau, Looker</p>
+    <p><strong>Databases &amp; BI:</strong> PostgreSQL, DBeaver, Tableau, Looker, ChromaDB</p>
     <p><strong>Platforms &amp; Tools:</strong> Dataiku, Docker, n8n, Streamlit</p>
     <p><strong>AI / ML:</strong> Machine Learning, Deep Learning, RAG Systems, LLM Integration, Gemini API, Claude, MLflow</p>
     <p><strong>Human Languages:</strong> Bahasa Indonesia (Native), English (Professional Working Proficiency)</p>
@@ -971,7 +992,7 @@
 
   const SKILLS = [
     { key:'Languages', items:['Python','C','SQL','MATLAB'] },
-    { key:'Databases & BI', items:['PostgreSQL','DBeaver','Tableau','Looker'] },
+    { key:'Databases & BI', items:['PostgreSQL','DBeaver','Tableau','Looker','ChromaDB'] },
     { key:'Platforms & Tools', items:['Dataiku','Docker','n8n','Streamlit','GitHub','GitLab','Sourcetree'] },
     { key:'AI / ML', items:['Machine Learning','Deep Learning','RAG Systems','LLM Integration','Gemini API','Claude','LangGraph','LangChain','MLflow'] },
     { key:'Languages Spoken', items:['Bahasa Indonesia (Native)','English (Professional)'] }
@@ -1023,7 +1044,7 @@
       links:[{label:'GitHub', href:'https://github.com/Fajriocta/Build-Model-Recomender-System'}] },
     { i:'10', title:'Legal-AI',
       desc:'AI-powered legal document analysis application featuring two core components: an NDA Risk Analyzer and a Legal Chatbot. Built with Go for the web frontend and Python for the AI backend.',
-      tools:['Python','Golang','Gemini API','RAG','FastAPI','Streamlit'], skills:[], roles:['Data Scientist','AI Engineer'],
+      tools:['Python','Golang','Gemini API','RAG','ChromaDB','FastAPI','Streamlit'], skills:[], roles:['Data Scientist','AI Engineer'],
       links:[{label:'GitHub', href:'https://github.com/Fajriocta/Legal-AI'}],
       highlight:'Automated NDA risk scoring',
       impact:[
@@ -1353,9 +1374,33 @@
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('editorial-theme', t);
   }
-  setTheme(localStorage.getItem('editorial-theme') || 'light');
+  setTheme(localStorage.getItem('editorial-theme') || 'dark');
   themeBtn.addEventListener('click', () => {
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  // ═══════════ BACKGROUND MUSIC ═══════════
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  const iconMusicOn = document.getElementById('iconMusicOn');
+  const iconMusicOff = document.getElementById('iconMusicOff');
+  const musicVolume = document.getElementById('musicVolume');
+
+  bgMusic.volume = musicVolume.value / 100;
+  musicVolume.addEventListener('input', () => {
+    bgMusic.volume = musicVolume.value / 100;
+  });
+
+  musicBtn.addEventListener('click', () => {
+    if (bgMusic.paused) {
+      bgMusic.play();
+      iconMusicOn.style.display = 'block';
+      iconMusicOff.style.display = 'none';
+    } else {
+      bgMusic.pause();
+      iconMusicOn.style.display = 'none';
+      iconMusicOff.style.display = 'block';
+    }
   });
 </script>
 </body>
