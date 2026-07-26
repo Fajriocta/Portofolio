@@ -1093,7 +1093,7 @@
       if (!lastWord || !cue || !hero) return;
       const wordRect = lastWord.getBoundingClientRect();
       const heroRect = hero.getBoundingClientRect();
-      cue.style.left = (wordRect.left + wordRect.width / 2 - heroRect.left) + 'px';
+      cue.style.left = (wordRect.left + wordRect.width / 2 - heroRect.left - 70) + 'px';
     }
     alignScrollCue();
     window.addEventListener('resize', alignScrollCue);
