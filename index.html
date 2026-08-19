@@ -649,6 +649,99 @@
     .corner-controls { top: 14px; right: 14px; }
     .logo-badge { top: 16px; left: 14px; font-size: 14px; }
   }
+
+  /* ═══════════ MUSIC COACHMARK (first visit) ═══════════ */
+  #musicCoach {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(6, 8, 14, 0.74);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  #musicCoach.show { opacity: 1; pointer-events: auto; }
+
+  /* lift the real music button above the dim layer = spotlight effect */
+  body.coach-active .corner-controls { z-index: 320; }
+  body.coach-active #musicBtn {
+    border-color: var(--accent);
+    animation: coachPulse 1.9s ease-out infinite;
+  }
+  @keyframes coachPulse {
+    0%   { box-shadow: 0 0 24px 4px rgba(var(--accent-rgb), 0.40), 0 0 0 0 rgba(var(--accent-rgb), 0.50); }
+    70%  { box-shadow: 0 0 24px 4px rgba(var(--accent-rgb), 0.40), 0 0 0 18px rgba(var(--accent-rgb), 0); }
+    100% { box-shadow: 0 0 24px 4px rgba(var(--accent-rgb), 0.40), 0 0 0 0 rgba(var(--accent-rgb), 0); }
+  }
+
+  .coach-card {
+    position: fixed; z-index: 330;
+    top: 78px; right: 24px;
+    width: min(286px, calc(100vw - 40px));
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px 14px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.38);
+    opacity: 0; transform: translateY(-12px);
+    transition: opacity 0.45s ease 0.2s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s;
+  }
+  #musicCoach.show .coach-card { opacity: 1; transform: none; }
+
+  /* little arrow pointing up at the music icon */
+  .coach-card::before {
+    content: '';
+    position: absolute; top: -8px; right: 27px;
+    width: 15px; height: 15px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    border-radius: 3px 0 0 0;
+    transform: rotate(45deg);
+  }
+  #musicCoach.show .coach-card::before { animation: coachNudge 1.9s ease-in-out infinite; }
+  @keyframes coachNudge {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); }
+    50%      { transform: rotate(45deg) translate(-3px, -3px); }
+  }
+
+  .coach-kicker {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 6px;
+  }
+  .coach-card p {
+    font-family: 'Fraunces', serif;
+    font-size: 15px; line-height: 1.45; margin: 0 0 14px;
+    color: var(--ink);
+  }
+  .coach-actions { display: flex; align-items: center; gap: 8px; }
+  .coach-btn {
+    font: inherit; font-size: 12.5px; font-weight: 500;
+    padding: 8px 14px; border-radius: 999px;
+    cursor: pointer; border: 1px solid var(--border);
+    background: transparent; color: var(--ink);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s, opacity 0.2s;
+  }
+  .coach-btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .coach-btn.primary {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .coach-btn.primary svg { width: 13px; height: 13px; }
+  .coach-btn.ghost { border-color: transparent; opacity: 0.6; padding: 8px 6px; }
+  .coach-btn.ghost:hover { opacity: 1; border-color: transparent; }
+
+  @media (max-width: 560px) {
+    .coach-card { top: 68px; right: 14px; left: 14px; width: auto; }
+    .coach-card::before { right: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body.coach-active #musicBtn {
+      animation: none;
+      box-shadow: 0 0 24px 4px rgba(var(--accent-rgb), 0.40);
+    }
+    #musicCoach.show .coach-card::before { animation: none; }
+    .coach-card { transition: opacity 0.25s ease; transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -672,6 +765,21 @@
 </div>
 
 <audio id="bgMusic" src="Morning.mp3" loop preload="none"></audio>
+
+<!-- ═══════════ MUSIC COACHMARK ═══════════ -->
+<div id="musicCoach" aria-hidden="true">
+  <div class="coach-card" role="dialog" aria-label="Background music tip">
+    <div class="coach-kicker">Psst</div>
+    <p>Turn on the music, let&rsquo;s vibe together.</p>
+    <div class="coach-actions">
+      <button class="coach-btn primary" id="coachPlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Play it
+      </button>
+      <button class="coach-btn ghost" id="coachSkip">Maybe later</button>
+    </div>
+  </div>
+</div>
 
 <nav class="side-nav" id="sideNav"></nav>
 
@@ -1402,6 +1510,35 @@
       iconMusicOff.style.display = 'block';
     }
   });
+
+  // ═══════════ MUSIC COACHMARK ═══════════
+  // shows on every page load
+  const coach = document.getElementById('musicCoach');
+  let coachClosed = false;
+
+  function closeCoach() {
+    if (coachClosed) return;
+    coachClosed = true;
+    coach.classList.remove('show');
+    coach.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('coach-active');
+  }
+
+  setTimeout(() => {
+    if (coachClosed) return;
+    coach.classList.add('show');
+    coach.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('coach-active');
+  }, 1400);
+
+  document.getElementById('coachPlay').addEventListener('click', () => {
+    if (bgMusic.paused) musicBtn.click();
+    closeCoach();
+  });
+  document.getElementById('coachSkip').addEventListener('click', closeCoach);
+  coach.addEventListener('click', e => { if (e.target === coach) closeCoach(); });
+  musicBtn.addEventListener('click', closeCoach);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCoach(); });
 </script>
 </body>
 </html>
