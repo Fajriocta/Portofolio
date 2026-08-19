@@ -1,0 +1,64 @@
+name: Sync portfolio data from Google Sheet
+
+# Reads the projects / skills / certs tabs from the Google Sheet, rewrites the
+# generated data block in index.html, and commits only if something actually
+# changed. The sheet URLs come from repository secrets, so they never appear in
+# the repo or in the build log, and the sheet stays the only copy of the data.
+
+on:
+  workflow_dispatch:        # run it by hand: Actions -> this workflow -> Run workflow
+  schedule:
+    - cron: '17 1 * * *'    # daily, 01:17 UTC (08:17 WIB)
+
+concurrency:
+  group: sync-sheet
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Check that the sheet secrets exist
+        env:
+          P: ${{ secrets.SHEET_CSV_PROJECTS }}
+          S: ${{ secrets.SHEET_CSV_SKILLS }}
+          C: ${{ secrets.SHEET_CSV_CERTS }}
+        run: |
+          missing=
+          [ -n "$P" ] || missing="$missing SHEET_CSV_PROJECTS"
+          [ -n "$S" ] || missing="$missing SHEET_CSV_SKILLS"
+          [ -n "$C" ] || missing="$missing SHEET_CSV_CERTS"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secret(s):$missing"
+            echo "Add them under Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+      - name: Sync from the sheet
+        env:
+          SHEET_CSV_PROJECTS: ${{ secrets.SHEET_CSV_PROJECTS }}
+          SHEET_CSV_SKILLS: ${{ secrets.SHEET_CSV_SKILLS }}
+          SHEET_CSV_CERTS: ${{ secrets.SHEET_CSV_CERTS }}
+        run: python scripts/sync_sheets.py
+
+      - name: Commit if the data changed
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No change - the sheet matches what is already published."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Sync portfolio data from Google Sheet"
+          git push
+          echo "Pushed updated data - GitHub Pages will redeploy."
