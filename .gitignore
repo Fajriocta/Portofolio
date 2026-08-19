@@ -1,0 +1,23 @@
+# secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# personal documents
+*.pdf
+
+# editor / IDE
+.idea/
+.vscode/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# old iterations & scratch images
+test*.html
+Electron.png
+atom-no-electrons.png
+bug1.png
+electron-sprite.png
